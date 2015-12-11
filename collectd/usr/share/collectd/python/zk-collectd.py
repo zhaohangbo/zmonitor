@@ -32,7 +32,7 @@ from StringIO import StringIO
 
 CONFIGS = []
 
-ZK_HOSTS = ["10.10.10.10"]
+ZK_HOSTS = ["zk1","zk2","zk3"]
 ZK_PORT = 2181
 ZK_INSTANCE = ""
 COUNTERS = set(["zk_packets_received", "zk_packets_sent"])
