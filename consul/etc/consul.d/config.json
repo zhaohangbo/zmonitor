@@ -1,0 +1,121 @@
+{
+  "datacenter": "zeus-virginia",
+
+  "server": true,
+  "bootstrap_expect": 1,
+  "data_dir": "/tmp/consul",
+  "node_name": "consul",
+  "ui_dir": "~/consul/consul_0.6.0_web_ui",
+  "advertise_addr": "10.10.10.10",
+  "client_addr":    "0.0.0.0",
+
+  "log_level": "INFO",  
+  "watches": [
+    {
+        "type": "checks",
+        "handler": ""
+    }
+  ],
+
+
+  "services": [
+    {
+      "id": "red0",
+      "name": "redis",
+      "tags": [
+        "master"
+      ],
+      "address": "127.0.0.1",
+      "port": 6000,
+      "checks": [
+        {
+          "script": "/bin/check_redis -p 6000",
+          "interval": "5s",
+          "ttl": "20s"
+        }
+      ]
+    },
+
+    {
+      "id": "ElasticSearch",
+      "name": "ElasticSearch",
+      "tags": [
+        "master",
+        "imp"
+      ],
+      "checks": [
+        {
+          "id": "escluster",
+          "name": "slacknotication",
+          "script": "~/consul/healthchecks/checkses.sh",
+          "interval": "10s",
+          "timeout" : "5s"
+        },
+        {
+           "id": "httpes",
+           "name": "HTTP Cluster Health API on port 9200",
+           "http": "http://es.ciscozeus.io:9200/_cluster/health",
+           "interval": "10s",
+           "timeout": "3s"
+        }
+      ]
+    },
+
+    {
+      "id": "Zookeeper",
+      "name": "Zookeeper",
+      "tags": [
+      "imp"
+      ],
+      "checks": [
+        {
+          "id": "zookeeper1",
+          "name": "zk1slack",
+          "script": "~/healthchecks/checkzk.sh zk1",
+          "interval": "10s",
+          "timeout" : "5s"
+        },
+        {
+          "id": "zookeeper2",
+          "name": "zk2slack",
+          "script": "~/healthchecks/checkzk.sh zk2",
+          "interval": "10s",
+          "timeout" : "5s"
+        },
+        {
+          "id": "zookeeper3",
+          "name": "zk3slack",
+          "script": "~/healthchecks/checkzk.sh zk3",
+          "interval": "10s",
+          "timeout" : "5s"
+        }
+      ]
+    },
+
+    {
+      "id": "influxdb_mnodedb",
+      "name": "influxdb_mnodedb",
+      "port": 8086,
+      "tags": [
+        "master"
+      ],
+      "checks": [
+        {
+          "id":"checkInfluxdb",
+          "script": "~/healthchecks/checkInfluxdb.sh -p 7000",
+          "interval": "30s",
+          "ttl": "60s"
+        },
+        {
+           "id": "httpcheck",
+           "name": "HTTP Cluster Health API on port 8086",
+           "http": "http://10.10.10.11:8086/query?pretty=true&q=SHOW%20STATS",
+           "interval": "10s",
+           "timeout": "3s"
+        }
+
+      ]
+    }
+
+  ]
+}
