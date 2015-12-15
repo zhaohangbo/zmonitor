@@ -32,7 +32,7 @@ from StringIO import StringIO
 
 CONFIGS = []
 
-ZK_HOSTS = ["zk1","zk2","zk3"]
+ZK_HOSTS = ["alerts.zk1.ciscozeus.io","alerts.zk2.ciscozeus.io","alerts.zk3.ciscozeus.io"]
 ZK_PORT = 2181
 ZK_INSTANCE = ""
 COUNTERS = set(["zk_packets_received", "zk_packets_sent"])
@@ -114,6 +114,7 @@ def read_callback():
                         val.type = 'counter' if k in COUNTERS else 'gauge'
                         val.type_instance = k
                         val.values = [v]
+			val.host = host
                         val.plugin_instance = conf['instance']
                         val.dispatch()
                     except (TypeError, ValueError):
@@ -138,7 +139,9 @@ def configure_callback(conf):
     for node in conf.children:
         if node.key == 'Hosts':
             if len(node.values[0]) > 0:
-                zk_hosts = [host.strip() for host in node.values[0].split(',')]
+		#Remove this code line ,because it overwrite the original hosts ZK_HOSTS
+                #zk_hosts = [host.strip() for host in node.values[0].split(',')]
+		pass
             else:
                 log(('ERROR: Invalid Hosts string. '
                      'Using default of %s') % zk_hosts)
