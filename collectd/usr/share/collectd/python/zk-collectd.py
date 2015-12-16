@@ -15,7 +15,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-#https://github.com/signalfx/collectd-zookeeper
 
 
 """Check Zookeeper Cluster.
