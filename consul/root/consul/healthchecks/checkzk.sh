@@ -2,16 +2,13 @@
 
 if [ $1 == "zk1" ]
 then
-  #host='zookeeper1.ciscozeus.io'
-  host='alerts.zk1.ciscozeus.io'
+  host='zookeeper1.mycluster.io'
 elif [ $1 == "zk2" ]
 then
-  #host='zookeeper2.ciscozeus.io'
-  host='alerts.zk2.ciscozeus.io'
+  host='zookeeper2.mycluster.io'
 elif [ $1 == "zk3" ]
 then
-  #host='zookeeper3.ciscozeus.io'
-  host='alerts.zk3.ciscozeus.io'
+  host='zookeeper3.mycluster.io'
 elif [ $1 == "hangbo_zk" ]
 then 
   host='10.10.10.10'
@@ -32,7 +29,7 @@ function send_success_message() {
                 then
                 echo 0 > /tmp/$1err_count
                 #payload='payload={"channel": "#virginia1_monitoring", "username": "webhookbot", "text":'echo $host '"port 2181 is ok. . .", "icon_emoji": ":green_heart:"}'
-                action=`curl -silent -X POST --data-urlencode 'payload={"channel": "#virginia1_monitoring", "username": "webhookbot", "text":"'$host'port 2181 is ok. . .", "icon_emoji": ":green_heart:"}' https://hooks.slack.com/services/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`
+                action=`curl -silent -X POST --data-urlencode 'payload={"channel": "#my_monitoring_channel", "username": "robot", "text":"'$host'port 2181 is ok. . .", "icon_emoji": ":green_heart:"}' https://hooks.slack.com/services/T10086UFO/654321XYZ/123456xyz`
         fi
 }
 
@@ -43,7 +40,7 @@ function send_error_message() {
                 then
                 count=$((count+1))
                 echo $count > /tmp/$1err_count
-                action=`curl -silent -X POST --data-urlencode 'payload={"channel": "#virginia1_monitoring", "username": "webhookbot", "text": "MayDay! MayDay!'"$host"'2181 is not ok! Cross-Check using --> echo ruok | nc $host 2181 ", "icon_emoji": ":skull:"}' https://hooks.slack.com/services/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`
+                action=`curl -silent -X POST --data-urlencode 'payload={"channel": "#my_monitoring_channel", "username": "robot", "text": "OMG! '"$host"'2181 is not ok! Cross-Check using --> echo ruok | nc $host 2181 ", "icon_emoji": ":skull:"}' https://hooks.slack.com/services/T10086UFO/654321XYZ/123456xyz`
         fi
 }
 
