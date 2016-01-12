@@ -10,7 +10,7 @@ function send_success_message() {
         if [[ "$count" != 0 ]]
                 then
                 echo 0 > /tmp/es_err_count
-                action=`curl -silent -X POST --data-urlencode 'payload={"channel": "#virginia1_monitoring", "username": "webhookbot", "text": "Elastic Search seems to be fine for now! :) . . . url: http://es.ciscozeus.io:9200/_cluster/health ", "icon_emoji": ":green_heart:"}' https://hooks.slack.com/services/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`
+                action=`curl -silent -X POST --data-urlencode 'payload={"channel": "#my_monitoring_channel", "username": "robot", "text": "Elastic Search seems to be fine for now! :) . . . url: http://xx.xx.xx.xx:9200/_cluster/health ", "icon_emoji": ":green_heart:"}' https://hooks.slack.com/services/T10086UFO/654321XYZ/123456xyz`
         fi
 }
 
@@ -21,7 +21,7 @@ function send_error_message() {
                 then
                 count=$((count+1))
                 echo $count > /tmp/es_err_count
-                action=`curl -silent -X POST --data-urlencode 'payload={"channel": "#virginia1_monitoring", "username": "webhookbot", "text": "MayDay! MayDay! Elastic Search es.ciscozeus.io Port 9200 is NOT Green. url: http://es.ciscozeus.io:9200/_cluster/health ", "icon_emoji": ":skull:"}' https://hooks.slack.com/services/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`
+                action=`curl -silent -X POST --data-urlencode 'payload={"channel": "#my_monitoring_channel", "username": "robot", "text": "Elastic Search xx.xx.xx.xx Port 9200 is NOT Green. url: http://xx.xx.xx.xx:9200/_cluster/health ", "icon_emoji": ":skull:"}' https://hooks.slack.com/services/T10086UFO/654321XYZ/123456xyz`
         fi
 }
 
@@ -29,7 +29,7 @@ function send_error_message() {
 #Main program starts from here
 
 init
-elastic_ip='es.ciscozeus.io'
+elastic_ip='es.mychannel.io'
 elastic_port='9200'
 result=`curl -silent -XGET 'http://'$elastic_ip:$elastic_port/_cluster/health | awk '{split($0,a,","); print a[2] }'`
 status=`echo $result | grep 'green'`
